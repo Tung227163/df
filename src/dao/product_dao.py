@@ -95,7 +95,10 @@ class ProductDAO(GenericDAO[Product]):
         conn = DatabaseUtil.get_connection()
         cursor = conn.cursor()
         
+        # Validate order direction to prevent SQL injection
         order = "ASC" if ascending else "DESC"
+        assert order in ("ASC", "DESC"), "Invalid order direction"
+        
         cursor.execute(f"""
             SELECT * FROM products WHERE is_active = 1 ORDER BY price {order}
         """)
@@ -108,7 +111,10 @@ class ProductDAO(GenericDAO[Product]):
         conn = DatabaseUtil.get_connection()
         cursor = conn.cursor()
         
+        # Validate order direction to prevent SQL injection
         order = "ASC" if ascending else "DESC"
+        assert order in ("ASC", "DESC"), "Invalid order direction"
+        
         cursor.execute(f"""
             SELECT * FROM products WHERE is_active = 1 ORDER BY product_name {order}
         """)

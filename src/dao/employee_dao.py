@@ -95,7 +95,10 @@ class EmployeeDAO(GenericDAO[Employee]):
         conn = DatabaseUtil.get_connection()
         cursor = conn.cursor()
         
+        # Validate order direction to prevent SQL injection
         order = "ASC" if ascending else "DESC"
+        assert order in ("ASC", "DESC"), "Invalid order direction"
+        
         cursor.execute(f"""
             SELECT * FROM employees WHERE is_active = 1 ORDER BY salary {order}
         """)

@@ -6,7 +6,13 @@ import os
 
 
 class DatabaseUtil:
-    """Database connection utility using SQLite"""
+    """
+    Database connection utility using SQLite
+    
+    NOTE: This singleton implementation is not thread-safe. For multi-threaded
+    applications, consider using threading.Lock() or a thread-safe singleton pattern.
+    This is acceptable for single-threaded CLI applications.
+    """
     
     DB_PATH = "supermarket.db"
     _connection = None
@@ -74,6 +80,9 @@ class DatabaseUtil:
             """)
             
             # Insert default admin user
+            # SECURITY NOTE: This is a demo/development setup with plain text password.
+            # In production, passwords should be hashed using bcrypt or similar,
+            # and users should be prompted to change default credentials on first login.
             cursor.execute("""
                 INSERT OR IGNORE INTO users (username, password, full_name, role)
                 VALUES ('admin', 'admin123', 'Administrator', 'ADMIN')
